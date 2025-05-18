@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+
+public class Mahasiswa
+{
+    public string NIM { get; set; }
+    public string Nama { get; set; }
+    public string Jurusan { get; set; }
+
+    public Mahasiswa(string nim, string nama, string jurusan)
+    {
+        NIM = nim;
+        Nama = nama;
+        Jurusan = jurusan;
+    }
+}
+
+class Program
+{
+    static List<Mahasiswa> daftarMahasiswa = new List<Mahasiswa>();
+
+    static void Main(string[] args)
+    {
+        int pilihan;
+        do
+        {
+            Console.WriteLine("Menu:");
+            Console.WriteLine("1. Tambah Mahasiswa");
+            Console.WriteLine("2. Lihat Mahasiswa");
+            Console.WriteLine("3. Update Mahasiswa");
+            Console.WriteLine("4. Hapus Mahasiswa");
+            Console.WriteLine("5. Keluar");
+            Console.Write("Pilih menu: ");
+            pilihan = Convert.ToInt32(Console.ReadLine());
+
+            switch (pilihan)
+            {
+                case 1:
+                    TambahMahasiswa();
+                    break;
+                case 2:
+                    LihatMahasiswa();
+                    break;
+                case 3:
+                    UpdateMahasiswa();
+                    break;
+                case 4:
+                    HapusMahasiswa();
+                    break;
+                case 5:
+                    Console.WriteLine("Keluar dari program.");
+                    break;
+                default:
+                    Console.WriteLine("Pilihan tidak valid.");
+                    break;
+            }
+        } while (pilihan != 5);
+    }
+
+    static void TambahMahasiswa()
+    {
+        Console.Write("Masukkan NIM: ");
+        string nim = Console.ReadLine();
+        if (daftarMahasiswa.Exists(m => m.NIM == nim))
+        {
+            Console.WriteLine("NIM sudah ada, tidak boleh duplikat.");
+            return;
+        }
+
+        Console.Write("Masukkan Nama: ");
+        string nama = Console.ReadLine();
+        Console.Write("Masukkan Jurusan: ");
+        string jurusan = Console.ReadLine();
+
+        daftarMahasiswa.Add(new Mahasiswa(nim, nama, jurusan));
+        Console.WriteLine("Data mahasiswa berhasil ditambahkan.");
+    }
+
+    static void LihatMahasiswa()
+    {
+        if (daftarMahasiswa.Count == 0)
+        {
+            Console.WriteLine("Belum ada data mahasiswa.");
+            return;
+        }
+
+        Console.WriteLine("Data Mahasiswa:");
+        foreach (var mhs in daftarMahasiswa)
+        {
+            Console.WriteLine($"NIM: {mhs.NIM}, Nama: {mhs.Nama}, Jurusan: {mhs.Jurusan}");
+        }
+    }
+
+    static void UpdateMahasiswa()
+    {
+        Console.Write("Masukkan NIM yang ingin diupdate: ");
+        string nim = Console.ReadLine();
+        var mahasiswa = daftarMahasiswa.Find(m => m.NIM == nim);
+
+        if (mahasiswa == null)
+        {
+            Console.WriteLine("NIM tidak ditemukan.");
+            return;
+        }
+
+        Console.Write("Masukkan Nama baru: ");
+        mahasiswa.Nama = Console.ReadLine();
+        Console.Write("Masukkan Jurusan baru: ");
+        mahasiswa.Jurusan = Console.ReadLine();
+        Console.WriteLine("Data mahasiswa berhasil diupdate.");
+    }
+
+    static void HapusMahasiswa()
+    {
+        Console.Write("Masukkan NIM yang ingin dihapus: ");
+        string nim = Console.ReadLine();
+        var mahasiswa = daftarMahasiswa.Find(m => m.NIM == nim);
+
+        if (mahasiswa == null)
+        {
+            Console.WriteLine("NIM tidak ditemukan.");
+            return;
+        }
+
+        daftarMahasiswa.Remove(mahasiswa);
+        Console.WriteLine("Data mahasiswa berhasil dihapus.");
+    }
+}
